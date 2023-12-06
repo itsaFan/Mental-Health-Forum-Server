@@ -1,6 +1,7 @@
 const userDao = require("../dao/userDao");
 const permissionDao = require("../dao/permissionDao");
 const { isValidPassword } = require("../utils/validation");
+const { generateLoginTokens } = require("../utils/generate-jwt");
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -34,6 +35,45 @@ const register = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  const { identifier, password } = req.body;
+
+  try {
+    if (!identifier || !password) {
+      return res.status(429).json({ message: "All Fields are Required" });
+    }
+
+    let user;
+    if (identifier.includes("@")) {
+      user = await userDao.findByEmail(identifier);
+    } else {
+      user = await userDao.findByUsername(identifier);
+    }
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.verifyPassword(password)) {
+      return res.status(401).json({ message: "Wrong password" });
+    }
+
+    const { accessToken, refreshToken } = generateLoginTokens(user);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: false,
+      secure: true,
+      sameSite: "None",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    return res.json({ accessToken });
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to login" });
+  }
+};
+
 module.exports = {
   register,
+  login,
 };

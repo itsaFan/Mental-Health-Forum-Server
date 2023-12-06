@@ -7,10 +7,15 @@ const createUser = async (userData) => {
 };
 
 const findByUsername = async (username) => {
-  return User.findOne({ username });
+  return User.findOne({ username }).populate("role");
+};
+
+const findByEmail = async (email) => {
+  return User.findOne({ email }).populate("role");
 };
 
 module.exports = {
   createUser,
   findByUsername,
+  findByEmail,
 };
