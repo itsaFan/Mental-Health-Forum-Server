@@ -1,7 +1,7 @@
 const userDao = require("../dao/userDao");
 const permissionDao = require("../dao/permissionDao");
 const { isValidPassword } = require("../utils/validation");
-const { generateLoginTokens } = require("../utils/generate-jwt");
+const { generateLoginTokens, generateAccessToken } = require("../utils/generate-jwt");
 const cache = require("memory-cache");
 
 const register = async (req, res) => {
@@ -81,16 +81,27 @@ const logout = async (req, res) => {
   if (refreshToken) {
     cache.put(refreshToken, true, 7 * 24 * 60 * 60 * 1000);
   }
-    if (accessToken) {
-      cache.put(accessToken, true, 15 * 60 * 1000);
-    }
+  if (accessToken) {
+    cache.put(accessToken, true, 15 * 60 * 1000);
+  }
 
   res.clearCookie("refreshToken");
   res.json({ message: "Logout success!" });
+};
+
+const refreshToken = async (req, res) => {
+  try {
+    const newAccessToken = generateAccessToken(req.userPayload.userId, req.userPayload.username, req.userPayload.role);
+    res.json({ accessToken: newAccessToken });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to generate token" });
+  }
 };
 
 module.exports = {
   register,
   login,
   logout,
+  refreshToken,
 };
