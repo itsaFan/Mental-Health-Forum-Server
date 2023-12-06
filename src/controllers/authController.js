@@ -4,6 +4,8 @@ const { isValidPassword } = require("../utils/validation");
 const { generateLoginTokens, generateAccessToken } = require("../utils/generate-jwt");
 const cache = require("memory-cache");
 const { generateResetPaswToken } = require("../utils/generate-uuid");
+const { getResetPaswEmailContent } = require("../utils/mail-template");
+const { sendEmail } = require("../config/mailer-config");
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -100,31 +102,40 @@ const refreshToken = async (req, res) => {
   }
 };
 
-// const requestResetPassword = async (req, res) => {
-//   const { email } = req.body;
+const requestResetPassword = async (req, res) => {
+  const { email } = req.body;
 
-//   try {
-//     const user = await userDao.findByEmail(email);
-//     if (!user) {
-//       return res.status(404).json({ message: "Email not found" });
-//     }
+  try {
+    const user = await userDao.findByEmail(email);
+    if (!user) {
+      return res.status(404).json({ message: "Email not found" });
+    }
 
-//     const tokenPassword = generateResetPaswToken();
-//     user.resetPasswordToken = tokenPassword;
-//     user.resetPasswordExpires = Date.now() + 1 * 60 * 60 * 1000;
+    const tokenPassword = generateResetPaswToken();
+    user.resetPasswordToken = tokenPassword;
+    user.resetPasswordExpires = Date.now() + 1 * 60 * 60 * 1000;
 
-//     await user.save();
+    await user.save();
 
+    const emailContent = getResetPaswEmailContent(tokenPassword);
+    await sendEmail({
+      to: user.email,
+      subject: "Reset Password",
+      html: emailContent,
+    });
 
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Error when trying to request reset password" });
-//   }
-// };
+    res.status(200).json({ message: "Password reset link sent to email" });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to request reset password" });
+  }
+};
 
 module.exports = {
   register,
   login,
   logout,
   refreshToken,
+  requestResetPassword
 };
