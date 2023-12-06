@@ -3,6 +3,7 @@ const permissionDao = require("../dao/permissionDao");
 const { isValidPassword } = require("../utils/validation");
 const { generateLoginTokens, generateAccessToken } = require("../utils/generate-jwt");
 const cache = require("memory-cache");
+const { generateResetPaswToken } = require("../utils/generate-uuid");
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -98,6 +99,28 @@ const refreshToken = async (req, res) => {
     res.status(500).json({ message: "Error when trying to generate token" });
   }
 };
+
+// const requestResetPassword = async (req, res) => {
+//   const { email } = req.body;
+
+//   try {
+//     const user = await userDao.findByEmail(email);
+//     if (!user) {
+//       return res.status(404).json({ message: "Email not found" });
+//     }
+
+//     const tokenPassword = generateResetPaswToken();
+//     user.resetPasswordToken = tokenPassword;
+//     user.resetPasswordExpires = Date.now() + 1 * 60 * 60 * 1000;
+
+//     await user.save();
+
+
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Error when trying to request reset password" });
+//   }
+// };
 
 module.exports = {
   register,
