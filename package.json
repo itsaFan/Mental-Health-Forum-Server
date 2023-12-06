@@ -1,9 +1,11 @@
 {
   "name": "mental-health-forum-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "RevoU Group Final Project - Mentalh Health Forum Server",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,10 +13,13 @@
     "url": "git+https://github.com/itsaFan/Mental-Health-Forum-Server.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Steffansim, AghfaIrawan",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/itsaFan/Mental-Health-Forum-Server/issues"
   },
-  "homepage": "https://github.com/itsaFan/Mental-Health-Forum-Server#readme"
+  "homepage": "https://github.com/itsaFan/Mental-Health-Forum-Server#readme",
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
 }
