@@ -20,8 +20,8 @@ async function seedPermission() {
 const dbConnection = () => {
     mongoose
       .connect(config.mongoUri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+        // useNewUrlParser: true,
+        // useUnifiedTopology: true,
       })
       .then(() => {
         console.log("Successfully connect to MongoDb");

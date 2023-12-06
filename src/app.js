@@ -8,6 +8,6 @@ app.use(cookieParser());
 app.use(express.json());
 
 // DB Connection
-dbConnection;
+dbConnection();
 
 app.listen(config.port, () => console.log(`Server is running on http://localhost:${config.port}`));
