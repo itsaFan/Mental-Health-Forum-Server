@@ -6,8 +6,11 @@ const createUser = async (userData) => {
   return newUser;
 };
 
-
+const findByUsername = async (username) => {
+  return User.findOne({ username });
+};
 
 module.exports = {
-    createUser,
-  };
+  createUser,
+  findByUsername,
+};
