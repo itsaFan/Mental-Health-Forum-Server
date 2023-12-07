@@ -98,7 +98,9 @@ const refreshToken = async (req, res) => {
     res.json({ accessToken: newAccessToken });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error when trying to generate token" });
+    res.status(500).json({
+      message: "Error when trying to generate token",
+    });
   }
 };
 
@@ -124,11 +126,43 @@ const requestResetPassword = async (req, res) => {
       html: emailContent,
     });
 
-    res.status(200).json({ message: "Password reset link sent to email" });
-
+    res.status(200).json({
+      message: "Password reset link sent to email",
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error when trying to request reset password" });
+    res.status(500).json({
+      message: "Error when trying to request reset password",
+    });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { resetToken, newPassword } = req.body;
+
+  try {
+    if (!isValidPassword(newPassword)) {
+      return res.status(400).json({
+        message: "Password needs to be at least 8 characters long and contain both numerical and alphabetical letters.",
+      });
+    }
+
+    const user = await userDao.findByResetTokenAndExpireDate(resetToken);
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid or token already expired",
+      });
+    }
+
+    user.password = newPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.status(200).json({ message: "Reset Password success!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to reset password" });
   }
 };
 
@@ -137,5 +171,6 @@ module.exports = {
   login,
   logout,
   refreshToken,
-  requestResetPassword
+  requestResetPassword,
+  resetPassword,
 };
