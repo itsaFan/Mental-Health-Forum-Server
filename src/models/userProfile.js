@@ -42,7 +42,8 @@ const userProfileSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ["Member", "Specialist", "Psychologist"],
-    },
+        default: "Member", 
+    },    
 });
 
 const userProfile = mongoose.model("UserProfile", userProfileSchema);

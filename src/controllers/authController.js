@@ -3,6 +3,8 @@ const permissionDao = require("../dao/permissionDao");
 const { isValidPassword } = require("../utils/validation");
 const { generateLoginTokens } = require("../utils/generate-jwt");
 const cache = require("memory-cache");
+const UserProfile = require('../models/UserProfile');
+
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -28,13 +30,20 @@ const register = async (req, res) => {
       });
     }
 
-    await userDao.createUser({ username, email, password, role: role._id });
+    // Create a new user
+    const newUser = await userDao.createUser({ username, email, password, role: role._id });
+
+    // Create a user profile for the new user
+    const userProfile = new UserProfile({ userId: newUser._id });
+    await userProfile.save();
+
     res.status(201).json({ message: "Register success!" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error when registering user" });
   }
 };
+
 
 const login = async (req, res) => {
   const { identifier, password } = req.body;

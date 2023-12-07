@@ -1,8 +1,10 @@
 const express = require("express");
-const userProfileController = require("../controllers/userProfileController");
+const { getUserProfile, updateProfile } = require("../controllers/profileController");
+const { verifyAccessToken } = require("../middlewares/verifyJwt");
 
-const router = express.Router()
+const router = express.Router();
 
-router.patch("/user-profile/:userId", userProfileController.updateProfile);
+router.get("/", verifyAccessToken, getUserProfile);
+router.put("/", verifyAccessToken, updateProfile);
 
 module.exports = router;
