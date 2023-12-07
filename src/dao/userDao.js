@@ -14,8 +14,18 @@ const findByEmail = async (email) => {
   return User.findOne({ email }).populate("role");
 };
 
+const findByResetTokenAndExpireDate = async (token) => {
+  return await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpires: {
+      $gt: Date.now(),
+    },
+  });
+};
+
 module.exports = {
   createUser,
   findByUsername,
   findByEmail,
+  findByResetTokenAndExpireDate
 };
