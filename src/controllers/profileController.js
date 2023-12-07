@@ -24,7 +24,7 @@ const updateProfile = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
   try {
-    const userId = req.userPayload?.userId;
+    const userId = req.userPayload.userId;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized - User ID not provided" });
@@ -34,11 +34,11 @@ const getUserProfile = async (req, res) => {
     console.log(userProfile);
 
     if (!userProfile) {
-      return res.status(404).json({ message: "User profile not found", userId: userId });
+      return res.status(404).json({ message: "User profile not found", ownerId: userId });
     }
 
     const profileData = {
-      userId: userProfile.userId,
+      profileOwner: userProfile.profileOwner,
       gender: userProfile.gender || "",
       country: userProfile.country || "",
       address: userProfile.address || "",

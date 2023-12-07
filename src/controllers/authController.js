@@ -36,7 +36,7 @@ const register = async (req, res) => {
     const newUser = await userDao.createUser({ username, email, password, role: role._id });
 
     // Create a user profile for the new user
-    const userProfile = new UserProfile({ userId: newUser._id });
+    const userProfile = new UserProfile({ profileOwner: newUser._id });
     await userProfile.save();
 
     res.status(201).json({ message: "Register success!" });
