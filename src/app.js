@@ -5,10 +5,12 @@ const dbConnection = require("./config/db-config");
 
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
+const corsMiddleware = require("./middlewares/corsConfig")
 
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
+app.use(corsMiddleware);
 
 // DB Connection
 dbConnection();
