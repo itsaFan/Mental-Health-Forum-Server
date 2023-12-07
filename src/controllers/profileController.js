@@ -48,6 +48,7 @@ const getUserProfile = async (req, res) => {
       assessmentResult: userProfile.assessmentResult || "",
       profileImgUrl: userProfile.profileImgUrl || "",
       status: userProfile.status,
+      createdOn: userProfile.createdOn,
     };
 
     res.status(200).json({ message: "User profile retrieved successfully", userProfile: profileData });

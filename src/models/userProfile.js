@@ -43,7 +43,12 @@ const userProfileSchema = new mongoose.Schema({
         type: String,
         enum: ["Member", "Specialist", "Psychologist"],
         default: "Member", 
-    },    
+    },
+    createdOn: {
+        type: Date,
+        default: Date.now,
+        required: true,
+      },
 });
 
 const userProfile = mongoose.model("UserProfile", userProfileSchema);
