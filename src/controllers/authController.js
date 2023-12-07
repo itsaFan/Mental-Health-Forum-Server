@@ -4,7 +4,7 @@ const { isValidPassword } = require("../utils/validation");
 const { generateLoginTokens, generateAccessToken } = require("../utils/generate-jwt");
 const cache = require("memory-cache");
 const { generateResetPaswToken } = require("../utils/generate-uuid");
-const { getResetPaswEmailContent } = require("../utils/mail-template");
+const { getResetPaswEmailContent, forgotUsernameEmailContent } = require("../utils/mail-template");
 const { sendEmail } = require("../config/mailer-config");
 
 const register = async (req, res) => {
@@ -166,6 +166,32 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const forgotUsername = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await userDao.findByEmail(email);
+    if (!user) {
+      return res.status(404).json({ message: "Email not found" });
+    }
+
+    const emailContent = forgotUsernameEmailContent(user.username);
+    await sendEmail({
+      to: user.email,
+      subject: "Username Assitance",
+      html: emailContent,
+    });
+
+    res.status(200).json({
+      message: "Your request for username has been seen successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Error when trying to send username, due to internal server",
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -173,4 +199,5 @@ module.exports = {
   refreshToken,
   requestResetPassword,
   resetPassword,
+  forgotUsername,
 };
