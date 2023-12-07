@@ -5,13 +5,17 @@ const updateProfile = async (req, res) => {
   const updateData = req.body;
 
   try {
+    if (updateData.gender !== "Male" && updateData.gender !== "Female") {
+      return res.status(400).json({ message: "Gender needs to be either Male or Female" });
+    }
+
     const updatedUserProfile = await userProfileDao.updateUserProfile(userId, updateData);
 
     if (!updatedUserProfile) {
       return res.status(404).json({ message: "User profile not found" });
     }
 
-    res.json({ message: "User profile updated successfully" });
+    res.status(201).json({ message: "User profile updated successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error when updating user profile" });
@@ -27,26 +31,26 @@ const getUserProfile = async (req, res) => {
     }
 
     const userProfile = await userProfileDao.getUserProfile(userId);
+    console.log(userProfile);
 
     if (!userProfile) {
       return res.status(404).json({ message: "User profile not found", userId: userId });
     }
 
-    const status = userProfile?.status || "Member";
     const profileData = {
       userId: userProfile.userId,
-      gender: userProfile.gender || "Unknown",
-      country: userProfile.country || "Unknown",
-      address: userProfile.address || "Unknown",
-      followers: userProfile.followers || [],
-      following: userProfile.following || [],
+      gender: userProfile.gender || "",
+      country: userProfile.country || "",
+      address: userProfile.address || "",
+      followers: userProfile.followers,
+      following: userProfile.following,
       bio: userProfile.bio || "",
       assessmentResult: userProfile.assessmentResult || "",
       profileImgUrl: userProfile.profileImgUrl || "",
-      status: status,
+      status: userProfile.status,
     };
 
-    res.json({ message: "User profile retrieved successfully", userProfile: profileData });
+    res.status(200).json({ message: "User profile retrieved successfully", userProfile: profileData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error when retrieving user profile" });

@@ -2,7 +2,7 @@ const UserProfile = require("../models/UserProfile");
 
 const getUserProfile = async (userId) => {
   try {
-    const userProfile = await UserProfile.findOne({ userId });
+    const userProfile = await UserProfile.findOne({ userId }).populate("userId", "username email");
 
     return userProfile;
   } catch (error) {
@@ -15,7 +15,7 @@ const updateUserProfile = async (userId, updateData) => {
     const updatedUserProfile = await UserProfile.findOneAndUpdate(
       { userId: userId },
       updateData,
-      { new: true }
+      { new: true, runValidators: true }
     );
 
     return updatedUserProfile;
