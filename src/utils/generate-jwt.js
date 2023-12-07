@@ -32,6 +32,21 @@ const generateLoginTokens = (user) => {
   };
 };
 
+const generateAccessToken = (userId, username, role) => {
+  return jwt.sign(
+    {
+      userId: userId,
+      username: username,
+      role: role,
+    },
+    config.accessSecret,
+    {
+      expiresIn: "15m",
+    }
+  );
+};
+
 module.exports = {
   generateLoginTokens,
+  generateAccessToken,
 };
