@@ -10,6 +10,22 @@ const getAllUsers = async () => {
   return User.find().select("-password").populate("role");
 };
 
+const updateUserRole = async (userId, newRoleId) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { role: newRoleId },
+      { new: true }
+    );
+
+    return updatedUser;
+  } catch (error) {
+    // Handle the error, log, or throw as needed
+    console.error("Error updating user role:", error);
+    throw error;
+  }
+};
+
 const findByUsername = async (username) => {
   return User.findOne({ username }).populate("role");
 };
@@ -32,5 +48,6 @@ module.exports = {
   findByUsername,
   findByEmail,
   findByResetTokenAndExpireDate,
-  getAllUsers
+  getAllUsers,
+  updateUserRole
 };
