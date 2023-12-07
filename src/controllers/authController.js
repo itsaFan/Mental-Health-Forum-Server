@@ -6,6 +6,7 @@ const cache = require("memory-cache");
 const { generateResetPaswToken } = require("../utils/generate-uuid");
 const { getResetPaswEmailContent, forgotUsernameEmailContent } = require("../utils/mail-template");
 const { sendEmail } = require("../config/mailer-config");
+const UserProfile = require("../models/UserProfile");
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -40,7 +41,7 @@ const register = async (req, res) => {
 
     res.status(201).json({ message: "Register success!" });
   } catch (error) {
-    console.error(error);
+    console.error(error);D
     res.status(500).json({ message: "Error when registering user" });
   }
 };
