@@ -6,6 +6,10 @@ const createUser = async (userData) => {
   return newUser;
 };
 
+const getAllUsers = async () => {
+  return User.find().select("-password").populate("role");
+};
+
 const findByUsername = async (username) => {
   return User.findOne({ username }).populate("role");
 };
@@ -27,5 +31,6 @@ module.exports = {
   createUser,
   findByUsername,
   findByEmail,
-  findByResetTokenAndExpireDate
+  findByResetTokenAndExpireDate,
+  getAllUsers
 };

@@ -5,6 +5,7 @@ const dbConnection = require("./config/db-config");
 
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
+const userRoutes = require("./routes/userRoutes")
 const corsMiddleware = require("./middlewares/corsConfig")
 
 const app = express();
@@ -18,5 +19,6 @@ dbConnection();
 // Routing
 app.use("/api", authRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/user", userRoutes)
 
 app.listen(config.port, () => console.log(`Server is running on http://localhost:${config.port}`));
