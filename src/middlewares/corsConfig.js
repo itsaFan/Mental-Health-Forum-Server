@@ -1,13 +1,12 @@
-const cors = require('cors');
+const config = require("../config/config");
 
 
 const corsOptions = {
-    origin: [process.env.DEV_URL, process.env.MAIN_URL],
+    origin: [config.devUrl, config.mainUrl],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     credentials: true,
     optionsSuccessStatus: 204,
 };
-
 
 const corsMiddleware = cors(corsOptions);
 
