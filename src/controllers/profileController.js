@@ -31,7 +31,7 @@ const getUserProfile = async (req, res) => {
     }
 
     const userProfile = await userProfileDao.getUserProfile(userId);
-    console.log(userProfile);
+    // console.log(userProfile);
 
     if (!userProfile) {
       return res.status(404).json({ message: "User profile not found", ownerId: userId });
