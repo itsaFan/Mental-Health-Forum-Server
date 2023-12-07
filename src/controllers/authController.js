@@ -3,6 +3,9 @@ const permissionDao = require("../dao/permissionDao");
 const { isValidPassword } = require("../utils/validation");
 const { generateLoginTokens, generateAccessToken } = require("../utils/generate-jwt");
 const cache = require("memory-cache");
+const { generateResetPaswToken } = require("../utils/generate-uuid");
+const { getResetPaswEmailContent, forgotUsernameEmailContent } = require("../utils/mail-template");
+const { sendEmail } = require("../config/mailer-config");
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;
