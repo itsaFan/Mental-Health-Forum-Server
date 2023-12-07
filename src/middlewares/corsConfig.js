@@ -1,5 +1,5 @@
 const config = require("../config/config");
-
+const cors = require('cors');
 
 const corsOptions = {
     origin: [config.devUrl, config.mainUrl],
