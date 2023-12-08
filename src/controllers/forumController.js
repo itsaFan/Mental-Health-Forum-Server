@@ -1,12 +1,15 @@
 const forumDao = require("../dao/forumDao");
 
 const createForum = async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, category } = req.body;
 
   try {
+    if (!category) {
+      return res.status(400).json({ message: "Category is required" });
+    }
     const forumId = await forumDao.getAndCreateForumId();
 
-    const forum = await forumDao.saveForum({ forumId, title, description });
+    const forum = await forumDao.saveForum({ forumId, title, description, category });
 
     return res.status(201).json({ message: "Forum created successfully: ", forum });
   } catch (error) {

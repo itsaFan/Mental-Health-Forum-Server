@@ -15,6 +15,7 @@ const forumSchema = new mongoose.Schema({
   },
   category: {
     type: String,
+    required: true,
     enum: ["General-Discussion", "Experiences", "Advices", "Treament-Suggestion"],
   },
 });
