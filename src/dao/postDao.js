@@ -19,9 +19,35 @@ const getAllPosts = async () => {
   return Post.find().populate("author", "username").populate('forum', "forumId title description");
 };
 
+const deletePost = async (postId, userId, userRole) => {
+  try {
+    const post = await Post.findById(postId);
+    if (!post) {
+      throw new Error("Post not found");
+    }
+
+    // Check if the user is the owner, moderator, or admin of the post
+    if (
+      post.author.toString() !== userId &&
+      userRole !== "ROLE_MODERATOR" &&
+      userRole !== "ROLE_ADMIN"
+    ) {
+      throw new Error("User is not authorized to delete this post");
+    }
+
+    // Perform the delete operation using deleteOne
+    await Post.deleteOne({ _id: postId });
+
+    return { success: true, message: "Post deleted successfully" };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
 module.exports = {
   savePost,
   getPostById,
   updatePost,
   getAllPosts,
+  deletePost
 };

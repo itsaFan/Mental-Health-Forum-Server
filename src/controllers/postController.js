@@ -76,8 +76,27 @@ const viewAllPosts = async (req, res) => {
   }
 };
 
+const deletePost = async (req, res) => {
+  const userId = req.userPayload.userId;
+  const userRole = req.userPayload.role; // Assuming role is included in the token
+  const { postId } = req.params;
+
+  try {
+    const result = await postDao.deletePost(postId, userId, userRole);
+    if (result.success) {
+      res.status(200).json({ message: result.message });
+    } else {
+      res.status(403).json({ error: result.error });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to delete post" });
+  }
+};
+
 module.exports = {
   createPost,
   editPost,
   viewAllPosts,
+  deletePost
 };
