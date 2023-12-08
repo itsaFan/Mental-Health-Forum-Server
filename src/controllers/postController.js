@@ -55,7 +55,18 @@ const editPost = async (req, res) => {
   }
 };
 
+const viewAllPosts = async (req, res) => {
+  try {
+    const posts = await postDao.getAllPosts();
+    return res.status(200).json({ message: "All Posts: ", posts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to fetch posts" });
+  }
+};
+
 module.exports = {
   createPost,
   editPost,
+  viewAllPosts
 };
