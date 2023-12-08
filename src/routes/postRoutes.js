@@ -5,9 +5,9 @@ const { checkRole } = require("../middlewares/roleAuth");
 
 const router = express.Router();
 
-router.post("/", verifyAccessToken, checkRole(["ROLE_USER", "ROLE_MODERATOR"]), createPost);
+router.post("/", verifyAccessToken, checkRole(["ROLE_USER", "ROLE_MODERATOR", "ROLE_ADMIN"]), createPost);
 router.get("/all", viewAllPosts);
 
-router.patch("/edit/:postId", verifyAccessToken, checkRole(["ROLE_USER", "ROLE_MODERATOR"]), editPost);
+router.patch("/edit/:postId", verifyAccessToken, checkRole(["ROLE_USER", "ROLE_ADMIN"]), editPost);
 
 module.exports = router;
