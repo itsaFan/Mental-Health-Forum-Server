@@ -76,9 +76,25 @@ const viewAllPosts = async (req, res) => {
   }
 };
 
+const viewPostsByForum = async (req, res) => {
+  const { forumId } = req.body;
+  try {
+    if (!forumId) {
+      return res.status(400).json({ message: "forumId is required" });
+    }
+    const posts = await postDao.getPostsByForumId(forumId);
+    return res.status(200).json({ message: "Posts by forum", posts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to fetch posts by forum._id" });
+  }
+};
+
+
+
 const deletePost = async (req, res) => {
   const userId = req.userPayload.userId;
-  const userRole = req.userPayload.role; 
+  const userRole = req.userPayload.role;
   const { postId } = req.params;
 
   try {
@@ -94,10 +110,10 @@ const deletePost = async (req, res) => {
   }
 };
 
-
 module.exports = {
   createPost,
   editPost,
   viewAllPosts,
-  deletePost
+  viewPostsByForum,
+  deletePost,
 };
