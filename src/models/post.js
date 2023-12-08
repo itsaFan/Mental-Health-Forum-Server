@@ -20,6 +20,10 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Forum",
     },
+    title: {
+      type: String,
+      required: true,
+    },
     content: {
       type: String,
       maxLength: 500,

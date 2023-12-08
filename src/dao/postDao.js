@@ -16,12 +16,12 @@ const updatePost = async (postId, updateData) => {
 };
 
 const getAllPosts = async () => {
-  return Post.find().populate("author", "username")
-}
+  return Post.find().populate("author", "username").populate('forum', "forumId title description");
+};
 
 module.exports = {
   savePost,
   getPostById,
   updatePost,
-  getAllPosts
+  getAllPosts,
 };

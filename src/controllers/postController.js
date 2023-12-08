@@ -1,7 +1,7 @@
 const postDao = require("../dao/postDao");
 
 const createPost = async (req, res) => {
-  const { content } = req.body;
+  const { forumId, title, content } = req.body;
   const userId = req.userPayload.userId;
 
   try {
@@ -9,11 +9,21 @@ const createPost = async (req, res) => {
       return res.status(404).json({ message: "UserId not found" });
     }
 
+    if (!forumId) {
+      return res.status(400).json({ message: "forumId field is missing" });
+    }
+
+    if (!title || !content) {
+      return res.status(400).json({ message: "Both Title and Content is required" });
+    }
+
     if (content.length > 500) {
       return res.status(400).json({ message: "Your post is too long, only maximum of 500 characters are allowed" });
     }
 
     const postData = {
+      forum: forumId,
+      title,
       content,
       author: userId,
     };
@@ -27,7 +37,7 @@ const createPost = async (req, res) => {
 };
 
 const editPost = async (req, res) => {
-  const { content } = req.body;
+  const { title, content } = req.body;
   const userId = req.userPayload.userId;
   const { postId } = req.params;
 
@@ -46,7 +56,7 @@ const editPost = async (req, res) => {
       return res.status(400).json({ message: "Your post is too long, only maximum of 500 characters are allowed" });
     }
 
-    const edittedPost = await postDao.updatePost(postId, { content });
+    const edittedPost = await postDao.updatePost(postId, { title, content });
 
     return res.status(200).json({ message: "Edit post success", post: edittedPost });
   } catch (error) {
@@ -55,6 +65,7 @@ const editPost = async (req, res) => {
   }
 };
 
+// Depracated
 const viewAllPosts = async (req, res) => {
   try {
     const posts = await postDao.getAllPosts();
@@ -68,5 +79,5 @@ const viewAllPosts = async (req, res) => {
 module.exports = {
   createPost,
   editPost,
-  viewAllPosts
+  viewAllPosts,
 };
