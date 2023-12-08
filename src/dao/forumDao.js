@@ -18,7 +18,12 @@ const saveForum = async (forumData) => {
   return newForum;
 };
 
+const getAllForums = async () => {
+  return Forum.find();
+};
+
 module.exports = {
   getAndCreateForumId,
   saveForum,
+  getAllForums,
 };
