@@ -76,8 +76,23 @@ const viewAllPosts = async (req, res) => {
   }
 };
 
+const viewPostsByForum = async (req, res) => {
+  const { forumId } = req.body;
+  try {
+    if (!forumId) {
+      return res.status(400).json({ message: "forumId is required" });
+    }
+    const posts = await postDao.getPostsByForumId(forumId);
+    return res.status(200).json({ message: "Posts by forum", posts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to fetch posts by forum._id" });
+  }
+};
+
 module.exports = {
   createPost,
   editPost,
   viewAllPosts,
+  viewPostsByForum,
 };

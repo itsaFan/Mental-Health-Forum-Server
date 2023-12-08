@@ -16,7 +16,11 @@ const updatePost = async (postId, updateData) => {
 };
 
 const getAllPosts = async () => {
-  return Post.find().populate("author", "username").populate('forum', "forumId title description");
+  return Post.find().populate("author", "username").populate("forum", "forumId title description");
+};
+
+const getPostsByForumId = async (forumId) => {
+  return Post.find({ forum: forumId });
 };
 
 module.exports = {
@@ -24,4 +28,6 @@ module.exports = {
   getPostById,
   updatePost,
   getAllPosts,
+  getPostById,
+  getPostsByForumId
 };
