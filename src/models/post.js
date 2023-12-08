@@ -16,22 +16,18 @@ const commentSchema = new mongoose.Schema({
 
 const postSchema = new mongoose.Schema(
   {
+    forum: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Topic",
+    },
     content: {
       type: String,
-      maxLength: 500
+      maxLength: 500,
     },
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    // createdAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
-    // updateAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
     comments: [commentSchema],
   },
   {
