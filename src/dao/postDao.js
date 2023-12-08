@@ -30,7 +30,7 @@ const deletePost = async (postId, userId, userRole) => {
       throw new Error("Post not found");
     }
 
-    // Check if the user is the owner, moderator, or admin of the post
+    
     if (
       post.author.toString() !== userId &&
       userRole !== "ROLE_MODERATOR" &&
@@ -39,7 +39,7 @@ const deletePost = async (postId, userId, userRole) => {
       throw new Error("User is not authorized to delete this post");
     }
 
-    // Perform the delete operation using deleteOne
+    
     await Post.deleteOne({ _id: postId });
 
     return { success: true, message: "Post deleted successfully" };
@@ -53,4 +53,5 @@ module.exports = {
   getPostById,
   updatePost,
   getAllPosts,
+  deletePost
 };
