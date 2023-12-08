@@ -13,6 +13,10 @@ const forumSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  category: {
+    type: String,
+    enum: ["General-Discussion", "Experiences", "Advices", "Treament-Suggestion"],
+  },
 });
 
 const Forum = mongoose.model("Forum", forumSchema);
