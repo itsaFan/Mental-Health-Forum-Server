@@ -25,7 +25,19 @@ const updateUserProfile = async (userId, updateData) => {
   }
 };
 
+const getUserProfileById = async (userId) => {
+  try {
+    const userProfile = await UserProfile.findOne({ profileOwner: userId })
+    .populate("profileOwner", "username"); 
+
+    return userProfile;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getUserProfile,
   updateUserProfile,
+  getUserProfileById
 };

@@ -58,7 +58,39 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+const getUserProfileById = async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    const userProfile = await userProfileDao.getUserProfileById(userId);
+
+    if (!userProfile) {
+      return res.status(404).json({ message: "User profile not found", userId: userId });
+    }
+
+    const formattedProfile = {
+      profileOwner: userProfile.profileOwner,
+      gender: userProfile.gender || "",
+      country: userProfile.country || "",
+      address: userProfile.address || "",
+      followers: userProfile.followers,
+      following: userProfile.following,
+      bio: userProfile.bio || "",
+      assessmentResult: userProfile.assessmentResult || "",
+      profileImgUrl: userProfile.profileImgUrl || "",
+      status: userProfile.status,
+      createdOn: userProfile.createdOn,
+    };
+
+    res.status(200).json({ message: "User profile retrieved successfully", userProfile: formattedProfile });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when retrieving user profile" });
+  }
+};
+
 module.exports = {
   updateProfile,
   getUserProfile,
+  getUserProfileById
 };

@@ -20,7 +20,7 @@ const updateUserRole = async (userId, newRoleId) => {
 
     return updatedUser;
   } catch (error) {
-    // Handle the error, log, or throw as needed
+    
     console.error("Error updating user role:", error);
     throw error;
   }
