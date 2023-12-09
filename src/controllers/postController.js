@@ -90,8 +90,6 @@ const viewPostsByForum = async (req, res) => {
   }
 };
 
-
-
 const deletePost = async (req, res) => {
   const userId = req.userPayload.userId;
   const userRole = req.userPayload.role;
