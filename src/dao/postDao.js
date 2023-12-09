@@ -20,7 +20,7 @@ const getAllPosts = async () => {
 };
 
 const getPostsByForumId = async (forumId) => {
-  return Post.find({ forum: forumId });
+  return Post.find({ forum: forumId }).populate("comments.commenter", "username").populate("author", "username");
 };
 
 const deletePost = async (postId, userId, userRole) => {

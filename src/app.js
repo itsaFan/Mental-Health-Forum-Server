@@ -9,6 +9,7 @@ const profileRoutes = require("./routes/profileRoutes");
 const postRoutes = require("./routes/postRoutes");
 const userRoutes = require("./routes/userRoutes");
 const forumRoutes = require("./routes/forumRoutes");
+const commentRoutes = require("./routes/commentRoutes");
 
 const app = express();
 app.use(cookieParser());
@@ -22,7 +23,8 @@ dbConnection();
 app.use("/api", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/user", userRoutes);
-app.use("/api/post", postRoutes);
 app.use("/api/forum", forumRoutes);
+app.use("/api/post", postRoutes);
+app.use("/api/comment", commentRoutes);
 
 app.listen(config.port, () => console.log(`Server is running on http://localhost:${config.port}`));
