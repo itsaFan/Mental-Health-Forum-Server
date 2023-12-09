@@ -65,17 +65,6 @@ const editPost = async (req, res) => {
   }
 };
 
-// Depracated
-const viewAllPosts = async (req, res) => {
-  try {
-    const posts = await postDao.getAllPosts();
-    return res.status(200).json({ message: "All Posts: ", posts });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error when trying to fetch posts" });
-  }
-};
-
 const viewPostsByForum = async (req, res) => {
   const { forumId } = req.body;
   try {
@@ -87,6 +76,22 @@ const viewPostsByForum = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error when trying to fetch posts by forum._id" });
+  }
+};
+
+const viewPostById = async (req, res) => {
+  const { postId } = req.params;
+  try {
+    const post = await postDao.getPostById(postId);
+    if (!post) {
+      return res.status(404).json({
+        message: "Post not found",
+      });
+    }
+    return res.status(200).json({ message: "Post: ", post });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to fetch posts" });
   }
 };
 
@@ -111,7 +116,7 @@ const deletePost = async (req, res) => {
 module.exports = {
   createPost,
   editPost,
-  viewAllPosts,
   viewPostsByForum,
+  viewPostById,
   deletePost,
 };

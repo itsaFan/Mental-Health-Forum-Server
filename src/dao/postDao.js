@@ -7,7 +7,7 @@ const savePost = async (postData) => {
 };
 
 const getPostById = async (_id) => {
-  return Post.findById({ _id }).populate("author", "username");
+  return Post.findById({ _id }).populate("author", "username").populate("forum", "title").populate("comments.commenter", "username");
 };
 
 const updatePost = async (postId, updateData) => {
@@ -20,7 +20,7 @@ const getAllPosts = async () => {
 };
 
 const getPostsByForumId = async (forumId) => {
-  return Post.find({ forum: forumId }).populate("comments.commenter", "username").populate("author", "username");
+  return Post.find({ forum: forumId }, "-comments").populate("author", "username").populate("forum", "forumId title description");
 };
 
 const deletePost = async (postId, userId, userRole) => {
