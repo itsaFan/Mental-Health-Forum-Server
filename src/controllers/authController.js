@@ -52,7 +52,7 @@ const login = async (req, res) => {
 
   try {
     if (!identifier || !password) {
-      return res.status(429).json({ message: "All Fields are Required" });
+      return res.status(400).json({ message: "All Fields are Required" });
     }
 
     let user;
