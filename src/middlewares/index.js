@@ -1,5 +1,6 @@
 const corsMiddleware = require("./corsConfig");
 const { setHelmet } = require("./helmet");
+const { LoginLimiter } = require("./limiter");
 const { setPermissionPolicy } = require("./permissionPolicy");
 const { checkRole } = require("./roleAuth");
 const { verifyAccessToken, verifyRefreshToken } = require("./verifyJwt");
@@ -13,4 +14,5 @@ module.exports = {
   checkRole,
   verifyAccessToken,
   verifyRefreshToken,
+  LoginLimiter,
 };
