@@ -42,6 +42,7 @@ const deletePost = async (postId, userId, userRole) => {
   }
 };
 
+
 module.exports = {
   savePost,
   getPostById,

@@ -1,13 +1,14 @@
 const postDao = require("../dao/postDao");
 
 const commentToPost = async (req, res) => {
-  const { postId, text } = req.body;
+  const { postId } = req.params;
+  const { text } = req.body;
   const commenter = req.userPayload.userId;
 
   try {
-    if (!postId || !text) {
+    if (!text) {
       return res.status(400).json({
-        message: "postId or text field is required",
+        message: "text field is required",
       });
     }
     const post = await postDao.getPostById(postId);
@@ -32,6 +33,43 @@ const commentToPost = async (req, res) => {
   }
 };
 
+const editOwnComment = async (req, res) => {
+  const { postId } = req.params;
+  const { commentId, text } = req.body;
+  const userId = req.userPayload.userId;
+
+  try {
+    const post = await postDao.getPostById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (!commentId || !text) {
+      return res.status(400).json({
+        message: "commentId & text field is required",
+      });
+    }
+
+    const comment = post.comments.id(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    if (comment.commenter._id.toString() !== userId) {
+      return res.status(403).json({ message: "Only the commenter can edit own's comment" });
+    }
+
+    comment.text = text;
+    await post.save();
+
+    res.status(200).json({ message: "Edit comment success" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to edit comment" });
+  }
+};
+
 module.exports = {
   commentToPost,
+  editOwnComment,
 };
