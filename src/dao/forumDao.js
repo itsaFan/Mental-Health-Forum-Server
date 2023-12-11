@@ -22,8 +22,13 @@ const getAllForums = async () => {
   return Forum.find();
 };
 
+const findForumById = async (forumId) => {
+  return Forum.findById({ _id: forumId });
+};
+
 module.exports = {
   getAndCreateForumId,
   saveForum,
   getAllForums,
+  findForumById,
 };

@@ -1,20 +1,22 @@
 const postDao = require("../dao/postDao");
+const forumDao = require("../dao/forumDao");
 
 const createPost = async (req, res) => {
   const { forumId, title, content } = req.body;
   const userId = req.userPayload.userId;
 
   try {
+    if (!forumId || !title || !content) {
+      return res.status(400).json({ message: "Either forumId, title, content field is missing" });
+    }
+
     if (!userId) {
-      return res.status(404).json({ message: "UserId not found" });
+      return res.status(404).json({ message: "UserId not found on the payload" });
     }
 
-    if (!forumId) {
-      return res.status(400).json({ message: "forumId field is missing" });
-    }
-
-    if (!title || !content) {
-      return res.status(400).json({ message: "Both Title and Content is required" });
+    const forumExist = await forumDao.findForumById(forumId);
+    if (!forumExist) {
+      return res.status(404).json({ message: "Forum not found" });
     }
 
     if (content.length > 500) {
