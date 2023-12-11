@@ -1,7 +1,7 @@
 const express = require("express");
 const { commentToPost, editOwnComment, deleteOwnComment } = require("../controllers/commentController");
-const { verifyAccessToken } = require("../middlewares/verifyJwt");
-const { checkRole } = require("../middlewares/roleAuth");
+const { verifyAccessToken, checkRole } = require("../middlewares");
+
 
 const router = express.Router();
 

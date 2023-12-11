@@ -1,11 +1,10 @@
 const express = require("express");
-const { verifyAccessToken } = require("../middlewares/verifyJwt");
-const { checkRole } = require("../middlewares/roleAuth");
 const { createForum, viewAllForums } = require("../controllers/forumController");
 const { viewPostsByForum } = require("../controllers/postController");
+const { verifyAccessToken, checkRole } = require("../middlewares");
 
 const router = express.Router();
-// Add verify & Role nanti
+
 router.get("/all", viewAllForums);
 router.get("/posts", viewPostsByForum);
 router.post("/add", verifyAccessToken, checkRole(["ROLE_MODERATOR", "ROLE_ADMIN"]), createForum);

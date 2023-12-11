@@ -2,7 +2,7 @@ const express = require("express");
 const config = require("./config/config");
 const cookieParser = require("cookie-parser");
 const dbConnection = require("./config/db-config");
-const corsMiddleware = require("./middlewares/corsConfig");
+const { corsMiddleware, setHelmet, setPermissionPolicy } = require("./middlewares");
 
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
@@ -15,6 +15,8 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(corsMiddleware);
+app.use(setPermissionPolicy);
+setHelmet(app);
 
 // DB Connection
 dbConnection();

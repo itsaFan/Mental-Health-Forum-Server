@@ -1,6 +1,6 @@
 const express = require("express");
 const { register, login, logout, refreshToken, requestResetPassword, resetPassword, forgotUsername } = require("../controllers/authController");
-const { verifyRefreshToken } = require("../middlewares/verifyJwt");
+const { verifyRefreshToken } = require("../middlewares");
 
 const router = express.Router();
 
