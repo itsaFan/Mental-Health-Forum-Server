@@ -68,10 +68,10 @@ const editPost = async (req, res) => {
 };
 
 const viewPostsByForum = async (req, res) => {
-  const { forumId } = req.body;
+  const { forumId } = req.params;
   try {
     if (!forumId) {
-      return res.status(400).json({ message: "forumId is required" });
+      return res.status(400).json({ message: "forumId is in the params" });
     }
     const posts = await postDao.getPostsByForumId(forumId);
     return res.status(200).json({ message: "Posts by forum", posts });
