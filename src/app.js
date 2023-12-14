@@ -1,4 +1,6 @@
 const express = require("express");
+const http = require("http");
+const { initSocketIo } = require("./middlewares/socket");
 const config = require("./config/config");
 const cookieParser = require("cookie-parser");
 const dbConnection = require("./config/db-config");
@@ -12,6 +14,8 @@ const forumRoutes = require("./routes/forumRoutes");
 const commentRoutes = require("./routes/commentRoutes");
 
 const app = express();
+const server = http.createServer(app);
+initSocketIo(server);
 app.use(cookieParser());
 app.use(express.json());
 app.use(corsMiddleware);
@@ -29,4 +33,5 @@ app.use("/api/forum", forumRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/comment", commentRoutes);
 
-app.listen(config.port, () => console.log(`Server is running on http://localhost:${config.port}`));
+server.listen(config.port, () => console.log(`Server is running on http://localhost:${config.port}`));
+// app.listen(config.port, () => console.log(`Server is running on http://localhost:${config.port}`));

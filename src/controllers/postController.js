@@ -1,5 +1,6 @@
 const postDao = require("../dao/postDao");
 const forumDao = require("../dao/forumDao");
+const { getIoInstance } = require("../middlewares/socket");
 
 const createPost = async (req, res) => {
   const { forumId, title, content } = req.body;
@@ -30,6 +31,10 @@ const createPost = async (req, res) => {
       author: userId,
     };
     const newPost = await postDao.savePost(postData);
+
+    const io = getIoInstance();
+    io.emit("updateTopTenPosts");
+    // io.emit('newPost', newPost);
 
     res.status(201).json({ message: "Post created successfully", post: newPost });
   } catch (error) {
