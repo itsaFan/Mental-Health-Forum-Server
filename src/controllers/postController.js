@@ -33,7 +33,7 @@ const createPost = async (req, res) => {
     const newPost = await postDao.savePost(postData);
 
     const io = getIoInstance();
-    io.emit("updateTopTenPosts");
+    io.emit("postCreated");
     // io.emit('newPost', newPost);
 
     res.status(201).json({ message: "Post created successfully", post: newPost });
