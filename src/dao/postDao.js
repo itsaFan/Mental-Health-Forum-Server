@@ -42,6 +42,9 @@ const deletePost = async (postId, userId, userRole) => {
   }
 };
 
+const getTopTenPosts = async () => {
+  return Post.find().populate("author", "username").populate("forum", "forumId title description").sort({ createdAt: -1 }).limit(10);
+};
 
 module.exports = {
   savePost,
@@ -50,4 +53,5 @@ module.exports = {
   getAllPosts,
   getPostsByForumId,
   deletePost,
+  getTopTenPosts,
 };

@@ -115,10 +115,21 @@ const deletePost = async (req, res) => {
   }
 };
 
+const viewTopTenPosts = async (req, res) => {
+  try {
+    const posts = await postDao.getTopTenPosts();
+    return res.status(200).json({ message: "Top 10 Posts: ", posts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to fetch 10 most posts" });
+  }
+};
+
 module.exports = {
   createPost,
   editPost,
   viewPostsByForum,
   viewPostById,
   deletePost,
+  viewTopTenPosts,
 };
