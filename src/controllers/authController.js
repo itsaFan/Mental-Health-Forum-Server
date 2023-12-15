@@ -63,7 +63,7 @@ const login = async (req, res) => {
     }
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "Username or Email not found" });
     }
 
     if (!user.verifyPassword(password)) {
