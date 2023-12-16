@@ -141,7 +141,7 @@ const viewPaginatedPosts = async (req, res) => {
     if (!forumId) {
       return res.status(400).json({ message: "forumId is required in the params" });
     }
-    const totalPosts = await postDao.countPostDocuments(forumId);
+    const totalPosts = await postDao.countPostsBasedOnForum(forumId);
     let posts = await postDao.getPaginatedPosts(forumId, limit, skipIndex);
 
     posts = posts.map((post) => {

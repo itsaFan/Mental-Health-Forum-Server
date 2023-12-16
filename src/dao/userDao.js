@@ -12,15 +12,10 @@ const getAllUsers = async () => {
 
 const updateUserRole = async (userId, newRoleId) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      { role: newRoleId },
-      { new: true }
-    );
+    const updatedUser = await User.findByIdAndUpdate(userId, { role: newRoleId }, { new: true });
 
     return updatedUser;
   } catch (error) {
-    
     console.error("Error updating user role:", error);
     throw error;
   }
@@ -43,11 +38,13 @@ const findByResetTokenAndExpireDate = async (token) => {
   });
 };
 
+
+
 module.exports = {
   createUser,
   findByUsername,
   findByEmail,
   findByResetTokenAndExpireDate,
   getAllUsers,
-  updateUserRole
+  updateUserRole,
 };

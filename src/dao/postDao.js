@@ -1,4 +1,5 @@
 const Post = require("../models/post");
+const User = require("../models/user");
 
 const savePost = async (postData) => {
   const newPost = new Post(postData);
@@ -60,7 +61,7 @@ const getPaginatedPosts = async (forumId, limit, skipIndex) => {
     .skip(skipIndex);
 };
 
-const countPostDocuments = async (forumId) => {
+const countPostsBasedOnForum = async (forumId) => {
   return Post.countDocuments({ forum: forumId });
 };
 
@@ -73,5 +74,5 @@ module.exports = {
   deletePost,
   getTopTenPosts,
   getPaginatedPosts,
-  countPostDocuments,
+  countPostsBasedOnForum,
 };
