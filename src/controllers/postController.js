@@ -145,13 +145,18 @@ const viewPaginatedPosts = async (req, res) => {
     let posts = await postDao.getPaginatedPosts(forumId, limit, skipIndex);
 
     posts = posts.map((post) => {
-      if (post.comments && post.comments.length > 0) {
+      const totalComments = post.comments.length;
+
+      if (totalComments > 0) {
         post.comments.sort((a, b) => b.createdAt - a.createdAt);
         post.comments = [post.comments[0]];
       }
-      return post;
-    });
 
+      return {
+        ...post.toObject(),
+        totalComments,
+      };
+    });
     return res.status(200).json({
       posts: posts,
       currentPage: page,
