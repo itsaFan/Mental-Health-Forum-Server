@@ -1,6 +1,7 @@
 const postDao = require("../dao/postDao");
 const forumDao = require("../dao/forumDao");
 const { getIoInstance } = require("../middlewares/socket");
+const Post = require("../models/post");
 
 const createPost = async (req, res) => {
   const { forumId, title, content } = req.body;
@@ -76,7 +77,7 @@ const viewPostsByForum = async (req, res) => {
   const { forumId } = req.params;
   try {
     if (!forumId) {
-      return res.status(400).json({ message: "forumId is in the params" });
+      return res.status(400).json({ message: "forumId is required in the params" });
     }
     const posts = await postDao.getPostsByForumId(forumId);
     return res.status(200).json({ message: "Posts by forum", posts });
@@ -130,6 +131,38 @@ const viewTopTenPosts = async (req, res) => {
   }
 };
 
+const viewPaginatedPosts = async (req, res) => {
+  const { forumId } = req.params;
+  const page = parseInt(req.query.page);
+  const limit = 20;
+  const skipIndex = (page - 1) * limit;
+
+  try {
+    if (!forumId) {
+      return res.status(400).json({ message: "forumId is required in the params" });
+    }
+    const totalPosts = await postDao.countPostDocuments(forumId);
+    let posts = await postDao.getPaginatedPosts(forumId, limit, skipIndex);
+
+    posts = posts.map((post) => {
+      if (post.comments && post.comments.length > 0) {
+        post.comments.sort((a, b) => b.createdAt - a.createdAt);
+        post.comments = [post.comments[0]];
+      }
+      return post;
+    });
+
+    return res.status(200).json({
+      posts: posts,
+      currentPage: page,
+      totalPages: Math.ceil(totalPosts / limit),
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error when trying to fetch posts" });
+  }
+};
+
 module.exports = {
   createPost,
   editPost,
@@ -137,4 +170,5 @@ module.exports = {
   viewPostById,
   deletePost,
   viewTopTenPosts,
+  viewPaginatedPosts,
 };

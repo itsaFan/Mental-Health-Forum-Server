@@ -97,7 +97,6 @@ const deleteOwnComment = async (req, res) => {
     comment.deleteOne();
     await post.save();
     res.status(200).json({ message: "Delete comment success" });
-    
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error when trying to delete comment" });
@@ -107,5 +106,5 @@ const deleteOwnComment = async (req, res) => {
 module.exports = {
   commentToPost,
   editOwnComment,
-  deleteOwnComment
+  deleteOwnComment,
 };

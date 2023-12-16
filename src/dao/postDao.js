@@ -46,6 +46,24 @@ const getTopTenPosts = async () => {
   return Post.find().populate("author", "username").populate("forum", "forumId title description").sort({ createdAt: -1 }).limit(10);
 };
 
+const getPaginatedPosts = async (forumId, limit, skipIndex) => {
+  return Post.find({ forum: forumId })
+    .populate("author", "username")
+    .populate("forum", "forumId title description")
+    .populate({
+      path: "comments.commenter",
+      select: "username",
+      model: "User",
+    })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .skip(skipIndex);
+};
+
+const countPostDocuments = async (forumId) => {
+  return Post.countDocuments({ forum: forumId });
+};
+
 module.exports = {
   savePost,
   getPostById,
@@ -54,4 +72,6 @@ module.exports = {
   getPostsByForumId,
   deletePost,
   getTopTenPosts,
+  getPaginatedPosts,
+  countPostDocuments,
 };
