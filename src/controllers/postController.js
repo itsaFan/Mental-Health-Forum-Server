@@ -2,6 +2,7 @@ const postDao = require("../dao/postDao");
 const forumDao = require("../dao/forumDao");
 const { getIoInstance } = require("../middlewares/socket");
 const Post = require("../models/post");
+const User = require("../models/user");
 
 const createPost = async (req, res) => {
   const { forumId, title, content } = req.body;
@@ -89,6 +90,10 @@ const viewPostsByForum = async (req, res) => {
 
 const viewPostById = async (req, res) => {
   const { postId } = req.params;
+  const commentPage = parseInt(req.query.commentPage) || 1;
+  const limit = 9;
+  const commentSkip = (commentPage - 1) * limit;
+
   try {
     const post = await postDao.getPostById(postId);
     if (!post) {
@@ -96,7 +101,21 @@ const viewPostById = async (req, res) => {
         message: "Post not found",
       });
     }
-    return res.status(200).json({ message: "Post: ", post });
+
+    const paginatedComments = post.comments.slice(commentSkip, commentSkip + limit);
+    const populatedComments = await Promise.all(
+      paginatedComments.map(async (comment) => {
+        const commenter = await User.findById(comment.commenter).select("username");
+        return { ...comment.toObject(), commenter };
+      })
+    );
+
+    return res.status(200).json({
+      message: "Post: ",
+      post: { ...post.toObject(), comments: populatedComments },
+      commentPage,
+      totalCommentPages: Math.ceil(post.comments.length / limit),
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error when trying to fetch posts" });

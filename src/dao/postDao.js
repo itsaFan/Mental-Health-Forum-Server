@@ -7,8 +7,12 @@ const savePost = async (postData) => {
   return newPost;
 };
 
+// const getPostById = async (_id) => {
+//   return Post.findById({ _id }).populate("author", "username").populate("forum", "title").populate("comments.commenter", "username");
+// };
+
 const getPostById = async (_id) => {
-  return Post.findById({ _id }).populate("author", "username").populate("forum", "title").populate("comments.commenter", "username");
+  return Post.findById(_id).populate("author", "username").populate("forum", "title");
 };
 
 const updatePost = async (postId, updateData) => {
