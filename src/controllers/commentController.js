@@ -1,4 +1,5 @@
 const postDao = require("../dao/postDao");
+const { getIoInstance } = require("../middlewares/socket");
 
 const commentToPost = async (req, res) => {
   const { postId } = req.params;
@@ -22,6 +23,8 @@ const commentToPost = async (req, res) => {
     const newComment = { text, commenter };
     post.comments.push(newComment);
     await post.save();
+    const io = getIoInstance();
+    io.emit("commentCreated");
 
     res.status(201).json({
       message: "Comment added successfully",
