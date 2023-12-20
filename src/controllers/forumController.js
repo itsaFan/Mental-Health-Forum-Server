@@ -30,11 +30,22 @@ const viewAllForums = async (req, res) => {
 
 const viewForumStatistics = async (req, res) => {
   try {
-    const stats = await forumDao.countForums()
-    return res.status(200).json({ message: "Statistics", stats});
+    const stats = await forumDao.countForums();
+    return res.status(200).json({ message: "Statistics", stats });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error when trying to fetch statistics" });
+  }
+};
+
+const searchForums = async (req, res) => {
+  const { q } = req.query;
+  const page = parseInt(req.query.page)
+  try {
+    const results = await forumDao.search(q, page);
+    return res.status(200).json(results);
+  } catch (error) {
+    res.status(500).json({ message: "Error during search" });
   }
 };
 
@@ -42,4 +53,5 @@ module.exports = {
   createForum,
   viewAllForums,
   viewForumStatistics,
+  searchForums,
 };
