@@ -6,7 +6,7 @@ const UserProfile = require("../models/UserProfile");
 // TODO: Move this configuration to a separate module/folder
 const storage = new Storage({
   projectId: "final-project-408610",
-  keyFilename: ".keyfile.json",
+  keyFilename: ".keyfile.json", // create keyfile.json file from json file in Slack
 });
 
 const bucketName = "final-project-revou";
