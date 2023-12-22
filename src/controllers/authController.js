@@ -6,7 +6,8 @@ const cache = require("memory-cache");
 const { generateResetPaswToken } = require("../utils/generate-uuid");
 const { getResetPaswEmailContent, forgotUsernameEmailContent } = require("../utils/mail-template");
 const { sendEmail } = require("../config/mailer-config");
-const UserProfile = require("../models/UserProfile");
+const UserProfile = require("../models/profile");
+
 
 const register = async (req, res) => {
   const { username, email, password } = req.body;

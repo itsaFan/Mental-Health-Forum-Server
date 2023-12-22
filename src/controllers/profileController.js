@@ -1,7 +1,8 @@
 const userProfileDao = require("../dao/userProfileDao");
 const path = require("path");
 const { Storage } = require("@google-cloud/storage");
-const UserProfile = require("../models/UserProfile");
+const UserProfile = require("../models/profile");
+
 
 // TODO: Move this configuration to a separate module/folder
 const storage = new Storage({
