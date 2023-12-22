@@ -32,6 +32,13 @@ This section provides an overview of the backend functionalities of Health Haven
   - Comment System: Functionality to add, view, and manage comments on forum posts.
   - Profile Management: User profile creation and editing capabilities, including image uploads.
 
+#### Guide to use this app on local
+1. Git clone this repository.
+2. Use `npm install` on root folder to install all depedency packages.
+3. We have .env file, so you need to configure your own .env.
+4. Refer to `.env.example` file on root directory.
+5. Then to start the project on your local development `npm start`. 
+
 ### Deployment && Screenshots
 **Notes: this backend/server is deployed on Gcloud App Engine**<br>
 #### Website Link: [HealthHavenForum](https://health-haven-forum.web.app/)
